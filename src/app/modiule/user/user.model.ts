@@ -1,11 +1,12 @@
 import { model, Schema } from 'mongoose';
 import { TUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
-import { NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 import { config } from '../../config';
 const userSchema = new Schema<TUser, UserModel>(
   {
     name: { type: String, required: [true, 'name is required'] },
+    image: { type: String, required: true },
     email: {
       type: String,
       required: [true, 'email is required'],
@@ -32,9 +33,18 @@ userSchema.post('save', function (user, next) {
   user.password = '';
   next();
 });
+
+// statics method here
 userSchema.statics.isUserExist = async (email: string) => {
   const user = await User.findOne({ email });
   return user;
 };
 
+userSchema.statics.isPasswordMatch = async (
+  hashPassword: string,
+  pleantextPassword: string
+) => {
+  const isMatched = await bcrypt.compare(pleantextPassword, hashPassword);
+  return isMatched;
+};
 export const User = model<TUser, UserModel>('User', userSchema);

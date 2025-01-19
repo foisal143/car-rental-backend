@@ -15,7 +15,10 @@ const signInuser = cathcAsync(async (req, res) => {
   res.send({
     success: true,
     message: 'User sign in successfull',
-    data,
+    data: {
+      user: data.user,
+      token: data.token,
+    },
   });
 });
 

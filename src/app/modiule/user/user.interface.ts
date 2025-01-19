@@ -8,8 +8,13 @@ export interface TUser {
   password: string;
   phone: string;
   address: string;
+  image: string;
 }
 
 export interface UserModel extends Model<TUser> {
   isUserExist(email: string): Promise<TUser>;
+  isPasswordMatch(
+    hashPassword: string,
+    pleantextPassword: string
+  ): Promise<boolean>;
 }

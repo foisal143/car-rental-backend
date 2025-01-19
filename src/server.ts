@@ -11,7 +11,6 @@ async function rootApp() {
   });
 }
 
-console.log(process.env.DB_PASS);
 app.listen(port, () => {
   console.log('server is running on port', port);
 });
